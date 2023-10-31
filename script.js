@@ -1,17 +1,27 @@
-let calculateBtn = document.getElementById("calculate-btn");
-let result = document.getElementById("result");
-let calculate = () => {
-  let p = Number(document.getElementById("principal").value);
-  let r = Number(document.getElementById("rate").value);
-  let t = Number(document.getElementById("time").value);
-  let duration = document.getElementById("duration").value;
-  let simpleInterest =
-    duration == "year" ? (p * r * t) / 100 : (p * r * t) / 1200;
-  let amount = p + simpleInterest;
+document.addEventListener("DOMContentLoaded", function() {
+  const principalInput = document.getElementById("principal");
+  const interestSlider = document.getElementById("interest");
+  const interestDisplay = document.getElementById("interest-display");
+  const yearsSelect = document.getElementById("years");
+  const calculateButton = document.getElementById("calculate");
+  const resultDiv = document.getElementById("result");
+  const interestAmount = document.getElementById("interest-amount");
 
-  result.innerHTML = `<div>Principal Amount: <span>$${p.toFixed(2)}</span></div>
-  <div>Total Interest: <span>$${simpleInterest.toFixed(2)}</span></div>
-  <div>Total Amount: <span>$${amount.toFixed(2)}</span></div>`;
-};
-calculateBtn.addEventListener("click", calculate);
-window.addEventListener("load", calculate);
+  interestSlider.addEventListener("input", function() {
+      interestDisplay.textContent = interestSlider.value + "%";
+  });
+
+  calculateButton.addEventListener("click", function() {
+      const principal = parseFloat(principalInput.value);
+      const interestRate = parseFloat(interestSlider.value);
+      const years = parseFloat(yearsSelect.value);
+
+      if (isNaN(principal) || principal <= 0) {
+          alert("Enter a positive number for Principal Amount");
+      } else {
+          const interest = (principal * interestRate * years) / 100;
+          interestAmount.textContent = interest.toFixed(2);
+          resultDiv.classList.remove("hidden");
+      }
+  });
+});
